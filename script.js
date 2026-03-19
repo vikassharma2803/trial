@@ -6,20 +6,25 @@ const container = document.getElementById("ram-container");
 document.getElementById("ramBtn").addEventListener("click", writeRAM);
 document.getElementById("resetBtn").addEventListener("click", resetRAM);
 
+// Load saved count
+count = localStorage.getItem("ramCount") || 0;
+counter.innerText = "राम लिखा गया: " + count;
+
 function writeRAM() {
   count++;
-  counter.innerText = "RAM Written: " + count;
+  localStorage.setItem("ramCount", count);
+  counter.innerText = "राम लिखा गया: " + count;
 
   const span = document.createElement("span");
-  span.innerText = " RAM ";
+  span.innerText = " राम ";
 
-  // Random color for fun
+  // Optional: random color
   span.style.color = "#" + Math.floor(Math.random()*16777215).toString(16);
 
   container.appendChild(span);
 }
 
-// Mouse movement trigger (light throttling)
+// Mouse movement trigger (controlled)
 let lastMove = 0;
 document.addEventListener("mousemove", function() {
   const now = Date.now();
@@ -31,6 +36,7 @@ document.addEventListener("mousemove", function() {
 
 function resetRAM() {
   count = 0;
-  counter.innerText = "RAM Written: 0";
+  localStorage.setItem("ramCount", 0);
+  counter.innerText = "राम लिखा गया: 0";
   container.innerHTML = "";
 }
