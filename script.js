@@ -1,14 +1,12 @@
-let count = 0;
+let count = localStorage.getItem("ramCount") || 0;
 
 const counter = document.getElementById("counter");
 const container = document.getElementById("ram-container");
 
+counter.innerText = "राम लिखा गया: " + count;
+
 document.getElementById("ramBtn").addEventListener("click", writeRAM);
 document.getElementById("resetBtn").addEventListener("click", resetRAM);
-
-// Load saved count
-count = localStorage.getItem("ramCount") || 0;
-counter.innerText = "राम लिखा गया: " + count;
 
 function writeRAM() {
   count++;
@@ -16,23 +14,28 @@ function writeRAM() {
   counter.innerText = "राम लिखा गया: " + count;
 
   const span = document.createElement("span");
-  span.innerText = " राम ";
-
-  // Optional: random color
-  span.style.color = "#" + Math.floor(Math.random()*16777215).toString(16);
+  span.innerText = "राम";
 
   container.appendChild(span);
+
+  // Milestone
+  if (count == 108) {
+    alert("🙏 आपने 108 बार राम लिखा 🙏");
+  }
 }
 
-// Mouse movement trigger (controlled)
+// Mouse + Touch support
 let lastMove = 0;
-document.addEventListener("mousemove", function() {
+document.addEventListener("mousemove", trigger);
+document.addEventListener("touchstart", writeRAM);
+
+function trigger() {
   const now = Date.now();
-  if (now - lastMove > 200) {
+  if (now - lastMove > 250) {
     writeRAM();
     lastMove = now;
   }
-});
+}
 
 function resetRAM() {
   count = 0;
